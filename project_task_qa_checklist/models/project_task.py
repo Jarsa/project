@@ -3,7 +3,7 @@
 
 from markupsafe import Markup
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class ProjectTask(models.Model):
@@ -76,7 +76,9 @@ class ProjectTask(models.Model):
 
     def action_generate_qa_checklist(self):
         """Create the checklist lines that apply to each task, idempotently."""
-        templates = self.env["project.task.qa.checklist.template"].search([])
+        templates = self.env["project.task.qa.checklist.template"].search(
+            ["|", ("always_applicable", "=", True), ("tag_ids", "!=", False)]
+        )
         line_model = self.env["project.task.qa.checklist.line"]
         for task in self:
             existing = task.qa_checklist_line_ids.template_id
@@ -122,9 +124,9 @@ class ProjectTask(models.Model):
             Markup("<li>%s (%s)</li>") % (line.name, line.state) for line in lines
         )
         if missing_evidence:
-            items += Markup("<li>%s</li>") % _("No QA evidence loaded")
+            items += Markup("<li>%s</li>") % self.env._("No QA evidence loaded")
         body = Markup("%s<ul>%s</ul>") % (
-            _("This task left a QA stage with:"),
+            self.env._("This task left a QA stage with:"),
             items,
         )
         self.message_post(
@@ -136,7 +138,7 @@ class ProjectTask(models.Model):
             self.activity_schedule(
                 act_type_xmlid="project_task_qa_checklist."
                 "mail_activity_qa_checklist_review",
-                summary=_("Review QA checklist"),
+                summary=self.env._("Review QA checklist"),
                 note=body,
                 user_id=manager.id,
             )

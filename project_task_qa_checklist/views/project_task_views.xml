@@ -37,7 +37,7 @@
                         The QA checklist is complete but has failed criteria.
                     </div>
                     <field name="qa_checklist_line_ids">
-                        <tree
+                        <list
                             editable="bottom"
                             create="0"
                             delete="0"
@@ -52,7 +52,7 @@
                             <field name="notes" />
                             <field name="reviewed_by" optional="show" />
                             <field name="reviewed_date" optional="hide" />
-                        </tree>
+                        </list>
                     </field>
                     <group>
                         <group string="QA Evidence">
