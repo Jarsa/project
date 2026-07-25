@@ -4,7 +4,7 @@
 {
     "name": "Project Task Purchase",
     "summary": "Create purchase orders from project tasks",
-    "version": "17.0.1.0.0",
+    "version": "19.0.1.0.0",
     "category": "Project Management",
     "author": "Jarsa, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/project",

@@ -1,7 +1,7 @@
 # Copyright 2023 - Jarsa
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class ProjectTask(models.Model):
@@ -52,11 +52,12 @@ class ProjectTask(models.Model):
             action.update(
                 {
                     "domain": [("id", "in", self.purchase_order_ids.ids)],
-                    "view_mode": "tree,form",
+                    "view_mode": "list,form",
                 }
             )
         return action
 
+    @api.depends("purchase_order_ids")
     def _compute_purchase_order_count(self):
         for task in self:
             task.purchase_order_count = len(task.purchase_order_ids)
