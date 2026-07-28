@@ -33,6 +33,10 @@ class ProjectTask(models.Model):
     qa_evidence_ids = fields.Many2many(
         comodel_name="ir.attachment",
         string="QA Evidence",
+        # Without this, reading the m2m runs ir.attachment._search() with no
+        # res_model restriction, which access-checks every attachment in the
+        # database (multi-second web_read on every task form).
+        bypass_search_access=True,
     )
     qa_evidence_url = fields.Char(
         string="QA Evidence Link",
